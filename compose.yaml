@@ -1,0 +1,27 @@
+services:
+  # Interactive chat: docker compose run --rm chat
+  chat:
+    build:
+      context: .
+      target: app
+    env_file:
+      - path: .env
+        required: false
+    stdin_open: true
+    tty: true
+
+  # Unit + e2e tests, no API key needed: docker compose run --rm test
+  # Live API test as well: docker compose run --rm -e RUN_LIVE_TESTS=1 -e ANTHROPIC_API_KEY test
+  test:
+    build:
+      context: .
+      target: app
+    command: ["pytest", "-v"]
+
+  # MCP Inspector: docker compose up inspector, then open the URL it prints (with the token)
+  inspector:
+    build:
+      context: .
+      target: inspector
+    # Host networking keeps the inspector bound to localhost instead of exposing it on all interfaces.
+    network_mode: host

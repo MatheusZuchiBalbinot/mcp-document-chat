@@ -23,6 +23,30 @@ uv run mcp dev mcp_server.py   # MCP Inspector (needs Node.js)
 
 MCP Chat is a command-line interface application that enables interactive chat capabilities with AI models through the Anthropic API. The application supports document retrieval, command-based prompts, and extensible tool integrations via the MCP (Model Context Protocol) architecture.
 
+## Docker
+
+Everything the project needs (Python 3.13, uv, the locked dependencies, Node.js 22 and the MCP Inspector) is in the
+image, so the host needs only Docker.
+
+```bash
+docker compose run --rm test        # unit + e2e tests, no API key needed
+docker compose run --rm chat        # the chat; reads ANTHROPIC_API_KEY and CLAUDE_MODEL from .env
+docker compose up inspector         # MCP Inspector on http://localhost:6274 (open the URL it prints, with the token)
+```
+
+The live API test is opt-in because it costs money:
+`docker compose run --rm -e RUN_LIVE_TESTS=1 -e ANTHROPIC_API_KEY test`.
+
+The inspector refuses to listen on all interfaces, so its service uses `network_mode: host` and stays on loopback. On
+Docker Desktop that only reaches your machine when **Settings → Resources → Network → Enable host networking** is on.
+
+## Tests
+
+- `tests/test_document_tools.py`: starts the server over stdio and calls each tool through `MCPClient`.
+- `tests/e2e/test_chat_tool_loop.py`: runs the real chat loop (`Chat` → `ToolManager` → `MCPClient` → server) with a
+  scripted Claude in place of the API.
+- `tests/e2e/test_live_claude.py`: the same loop against the real API, skipped unless `RUN_LIVE_TESTS=1`.
+
 ## Prerequisites
 
 - Python 3.10 to 3.13
