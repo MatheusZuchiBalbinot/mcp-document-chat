@@ -4,7 +4,7 @@ Code for Anthropic Academy's [Introduction to Model Context Protocol](https://ac
 
 ## Course progress
 
-- [ ] Defining tools with MCP: `read_doc_contents` and `edit_document` in `mcp_server.py`
+- [x] Defining tools with MCP: `read_doc_contents` and `edit_document` in `mcp_server.py`
 - [ ] Implementing a client: `list_tools` and `call_tool` in `mcp_client.py`
 - [ ] Defining resources: `docs://documents` and `docs://documents/{doc_id}` in `mcp_server.py`
 - [ ] Accessing resources: `read_resource` in `mcp_client.py`
@@ -12,6 +12,12 @@ Code for Anthropic Academy's [Introduction to Model Context Protocol](https://ac
 - [ ] Prompts in the client: `list_prompts` and `get_prompt` in `mcp_client.py`
 
 Each lesson is one commit. The remaining `TODO`s in the code mark the lessons still to do.
+
+## Quick checks
+
+```bash
+uv run mcp dev mcp_server.py   # MCP Inspector (needs Node.js)
+```
 
 MCP Chat is a command-line interface application that enables interactive chat capabilities with AI models through the Anthropic API. The application supports document retrieval, command-based prompts, and extensible tool integrations via the MCP (Model Context Protocol) architecture.
 
