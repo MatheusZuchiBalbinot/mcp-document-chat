@@ -206,5 +206,5 @@ class CliApp:
                 response = await self.agent.run(user_input)
                 print(f"\nResponse:\n{response}")
 
-            except KeyboardInterrupt:
+            except (KeyboardInterrupt, EOFError):
                 break
