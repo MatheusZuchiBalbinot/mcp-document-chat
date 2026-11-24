@@ -163,4 +163,4 @@ uv run pytest
 
 My code (the lesson implementations, tests, Docker setup and docs) is under the [MIT License](LICENSE). The course's
 starter code (`core/`, `main.py` and the base of `mcp_server.py` and `mcp_client.py`) belongs to Anthropic and is not
-covered by it; see [LICENSE](LICENSE) for the exact split.
+covered by it; see [NOTICE](NOTICE) for the exact split.

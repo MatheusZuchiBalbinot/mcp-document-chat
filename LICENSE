@@ -19,23 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-
-Third-party code not covered by this license
-
-This project is built on the starter project of Anthropic Academy's
-"Introduction to Model Context Protocol" course
-(https://academy.claude.com/courses/introduction-to-model-context-protocol).
-That starter code is the work of Anthropic and is not licensed under the MIT
-License above; all rights to it remain with Anthropic. It includes:
-
-- core/ (chat.py, claude.py, cli.py, cli_chat.py, tools.py)
-- main.py
-- the base of mcp_server.py (server setup and the sample documents) and of
-  mcp_client.py (the MCPClient connection and session handling)
-- the original setup and usage instructions in README.md
-
-The MIT License above covers the rest: the lesson implementations in
-mcp_server.py and mcp_client.py, the tests, the Docker setup, the fix in
-core/cli.py, and the documentation added on top of the course's README.
