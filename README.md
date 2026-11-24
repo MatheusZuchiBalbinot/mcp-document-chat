@@ -9,9 +9,9 @@ Code for Anthropic Academy's [Introduction to Model Context Protocol](https://ac
 - [x] Defining resources: `docs://documents` and `docs://documents/{doc_id}` in `mcp_server.py`
 - [x] Accessing resources: `read_resource` in `mcp_client.py`
 - [x] Defining prompts: `/format` and summarize in `mcp_server.py`
-- [ ] Prompts in the client: `list_prompts` and `get_prompt` in `mcp_client.py`
+- [x] Prompts in the client: `list_prompts` and `get_prompt` in `mcp_client.py`
 
-Each lesson is one commit. The remaining `TODO`s in the code mark the lessons still to do.
+Each lesson is one commit.
 
 ## Quick checks
 
