@@ -158,3 +158,9 @@ To fully implement the MCP features:
 ```bash
 uv run pytest
 ```
+
+## License
+
+My code (the lesson implementations, tests, Docker setup and docs) is under the [MIT License](LICENSE). The course's
+starter code (`core/`, `main.py` and the base of `mcp_server.py` and `mcp_client.py`) belongs to Anthropic and is not
+covered by it; see [LICENSE](LICENSE) for the exact split.
