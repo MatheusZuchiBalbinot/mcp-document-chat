@@ -5,7 +5,7 @@ Code for Anthropic Academy's [Introduction to Model Context Protocol](https://ac
 ## Course progress
 
 - [x] Defining tools with MCP: `read_doc_contents` and `edit_document` in `mcp_server.py`
-- [ ] Implementing a client: `list_tools` and `call_tool` in `mcp_client.py`
+- [x] Implementing a client: `list_tools` and `call_tool` in `mcp_client.py`
 - [ ] Defining resources: `docs://documents` and `docs://documents/{doc_id}` in `mcp_server.py`
 - [ ] Accessing resources: `read_resource` in `mcp_client.py`
 - [ ] Defining prompts: `/format` and summarize in `mcp_server.py`
@@ -16,6 +16,8 @@ Each lesson is one commit. The remaining `TODO`s in the code mark the lessons st
 ## Quick checks
 
 ```bash
+uv run pytest           # starts the server over stdio and calls the tools through MCPClient
+uv run mcp_client.py    # prints the tools the server exposes
 uv run mcp dev mcp_server.py   # MCP Inspector (needs Node.js)
 ```
 
@@ -125,6 +127,8 @@ To fully implement the MCP features:
 1. Complete the TODOs in `mcp_server.py`
 2. Implement the missing functionality in `mcp_client.py`
 
-### Linting and Typing Check
+### Tests
 
-There are no lint or type checks implemented.
+```bash
+uv run pytest
+```
