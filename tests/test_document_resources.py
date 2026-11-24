@@ -47,3 +47,19 @@ def test_document_resource_returns_its_text() -> None:
 
     assert contents.mimeType == "text/plain"
     assert contents.text == "This deposition covers the testimony of Angela Smith, P.E."
+
+
+def read_parsed(uri: str) -> object:
+    async def scenario() -> object:
+        async with connect_to_server() as client:
+            return await client.read_resource(uri)
+
+    return asyncio.run(scenario())
+
+
+def test_client_parses_the_json_document_list() -> None:
+    assert read_parsed("docs://documents") == DOC_IDS
+
+
+def test_client_returns_plain_text_documents_as_strings() -> None:
+    assert read_parsed("docs://documents/plan.md") == "The plan outlines the steps for the project's implementation."
