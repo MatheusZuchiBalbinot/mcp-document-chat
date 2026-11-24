@@ -1,10 +1,12 @@
 import asyncio
 import json
 
+import pytest
 from mcp import types
+from mcp.shared.exceptions import McpError
 from pydantic import AnyUrl
 
-from tests.support import connect_to_server
+from tests.support import BINARY_RESOURCE_SERVER_SCRIPT, connect_to_server
 
 DOC_IDS = ["deposition.md", "report.pdf", "financials.docx", "outlook.pdf", "plan.md", "spec.txt"]
 
@@ -63,3 +65,17 @@ def test_client_parses_the_json_document_list() -> None:
 
 def test_client_returns_plain_text_documents_as_strings() -> None:
     assert read_parsed("docs://documents/plan.md") == "The plan outlines the steps for the project's implementation."
+
+
+def test_unknown_document_resource_is_an_error() -> None:
+    with pytest.raises(McpError, match="missing.md not found"):
+        read_raw("docs://documents/missing.md")
+
+
+def test_client_refuses_a_binary_resource() -> None:
+    async def scenario() -> None:
+        async with connect_to_server(BINARY_RESOURCE_SERVER_SCRIPT) as client:
+            await client.read_resource("files://logo.png")
+
+    with pytest.raises(ValueError, match="files://logo.png is not text"):
+        asyncio.run(scenario())

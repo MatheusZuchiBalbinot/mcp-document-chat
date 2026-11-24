@@ -5,12 +5,14 @@ from mcp.types import CallToolResult, TextContent
 
 from mcp_client import MCPClient
 
-SERVER_SCRIPT = str(Path(__file__).resolve().parent.parent / "mcp_server.py")
+TESTS_DIR = Path(__file__).resolve().parent
+SERVER_SCRIPT = str(TESTS_DIR.parent / "mcp_server.py")
+BINARY_RESOURCE_SERVER_SCRIPT = str(TESTS_DIR / "servers" / "binary_resource_server.py")
 
 
-def connect_to_server() -> MCPClient:
-    """A client for a fresh mcp_server.py process, so each test starts from the original documents."""
-    return MCPClient(command=sys.executable, args=[SERVER_SCRIPT])
+def connect_to_server(script: str = SERVER_SCRIPT) -> MCPClient:
+    """A client for a fresh server process, so each test starts from the original documents."""
+    return MCPClient(command=sys.executable, args=[script])
 
 
 def result_text(result: CallToolResult) -> str:

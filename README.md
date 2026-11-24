@@ -43,8 +43,10 @@ Docker Desktop that only reaches your machine when **Settings → Resources → 
 ## Tests
 
 - `tests/test_document_tools.py`: starts the server over stdio and calls each tool through `MCPClient`.
-- `tests/e2e/test_chat_tool_loop.py`: runs the real chat loop (`Chat` → `ToolManager` → `MCPClient` → server) with a
-  scripted Claude in place of the API.
+- `tests/test_document_resources.py` and `tests/test_document_prompts.py`: the same for resources and prompts;
+  `tests/servers/` holds small servers for cases the document server can't produce (a binary resource).
+- `tests/e2e/`: runs the real chat loop (`Chat` → `ToolManager` → `MCPClient` → server) with a
+  scripted Claude in place of the API: tool calls, `@document` mentions and `/format`, `/summarize` commands.
 - `tests/e2e/test_live_claude.py`: the same loop against the real API, skipped unless `RUN_LIVE_TESTS=1`.
 
 ## Prerequisites

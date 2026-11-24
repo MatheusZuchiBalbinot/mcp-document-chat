@@ -45,3 +45,26 @@ def test_format_command_sends_the_prompt_and_edits_through_the_tool() -> None:
 
 async def read_plan(client: MCPClient) -> str:
     return await client.read_resource("docs://documents/plan.md")
+
+
+def test_summarize_command_reads_the_document_through_the_tool() -> None:
+    read_request = tool_use("toolu_1", "read_doc_contents", {"doc_id": "financials.docx"})
+    replies = [
+        assistant_message([read_request], "tool_use"),
+        assistant_message([TextBlock(type="text", text="- Budget and expenditures")], "end_turn"),
+    ]
+    claude = ScriptedClaude(replies)
+
+    async def scenario() -> tuple[str, str]:
+        async with connect_to_server() as client:
+            chat = CliChat(doc_client=client, clients={"doc_client": client}, claude_service=claude)
+            answer = await chat.run("/summarize financials.docx")
+
+            return chat.messages[0]["content"], answer
+
+    first_message, answer = asyncio.run(scenario())
+
+    assert "Your goal is to summarize a document." in first_message
+    assert "financials.docx" in first_message
+    assert "budget and expenditures" in claude.tool_results[0]["content"]
+    assert answer == "- Budget and expenditures"
