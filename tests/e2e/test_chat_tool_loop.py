@@ -5,16 +5,12 @@ needs no API key.
 """
 
 import asyncio
-import sys
-from pathlib import Path
 
 from anthropic.types import Message, TextBlock, ToolUseBlock, Usage
 
 from core.chat import Chat
 from core.claude import Claude
-from mcp_client import MCPClient
-
-SERVER_SCRIPT = str(Path(__file__).resolve().parents[2] / "mcp_server.py")
+from tests.support import connect_to_server
 
 
 def assistant_message(content: list, stop_reason: str) -> Message:
@@ -57,7 +53,7 @@ class ScriptedClaude(Claude):
 
 def run_chat(claude: ScriptedClaude, query: str) -> str:
     async def scenario() -> str:
-        async with MCPClient(command=sys.executable, args=[SERVER_SCRIPT]) as client:
+        async with connect_to_server() as client:
             chat = Chat(claude_service=claude, clients={"doc_client": client})
 
             return await chat.run(query)

@@ -1,0 +1,49 @@
+import asyncio
+import json
+
+from mcp import types
+from pydantic import AnyUrl
+
+from tests.support import connect_to_server
+
+DOC_IDS = ["deposition.md", "report.pdf", "financials.docx", "outlook.pdf", "plan.md", "spec.txt"]
+
+
+def read_raw(uri: str) -> types.TextResourceContents:
+    async def scenario() -> types.TextResourceContents:
+        async with connect_to_server() as client:
+            result = await client.session().read_resource(AnyUrl(uri))
+            contents = result.contents[0]
+            assert isinstance(contents, types.TextResourceContents)
+
+            return contents
+
+    return asyncio.run(scenario())
+
+
+def test_server_lists_the_direct_and_templated_resources() -> None:
+    async def scenario() -> tuple[list[str], list[str]]:
+        async with connect_to_server() as client:
+            resources = await client.session().list_resources()
+            templates = await client.session().list_resource_templates()
+
+            return [str(r.uri) for r in resources.resources], [t.uriTemplate for t in templates.resourceTemplates]
+
+    uris, templates = asyncio.run(scenario())
+
+    assert uris == ["docs://documents"]
+    assert templates == ["docs://documents/{doc_id}"]
+
+
+def test_document_list_is_json_with_every_doc_id() -> None:
+    contents = read_raw("docs://documents")
+
+    assert contents.mimeType == "application/json"
+    assert json.loads(contents.text) == DOC_IDS
+
+
+def test_document_resource_returns_its_text() -> None:
+    contents = read_raw("docs://documents/deposition.md")
+
+    assert contents.mimeType == "text/plain"
+    assert contents.text == "This deposition covers the testimony of Angela Smith, P.E."

@@ -2,16 +2,13 @@
 
 import asyncio
 import os
-import sys
-from pathlib import Path
 
 import pytest
 
 from core.chat import Chat
 from core.claude import Claude
-from mcp_client import MCPClient
+from tests.support import connect_to_server
 
-SERVER_SCRIPT = str(Path(__file__).resolve().parents[2] / "mcp_server.py")
 DEFAULT_MODEL = "claude-haiku-5-5"
 
 is_live_enabled = os.getenv("RUN_LIVE_TESTS") == "1" and bool(os.getenv("ANTHROPIC_API_KEY"))
@@ -22,7 +19,7 @@ def test_claude_answers_from_the_document_tool() -> None:
     async def scenario() -> str:
         claude = Claude(model=os.getenv("CLAUDE_MODEL", DEFAULT_MODEL))
 
-        async with MCPClient(command=sys.executable, args=[SERVER_SCRIPT]) as client:
+        async with connect_to_server() as client:
             chat = Chat(claude_service=claude, clients={"doc_client": client})
 
             return await chat.run("Use your tools: what is the height of the tower in report.pdf? Answer briefly.")
